@@ -6,7 +6,7 @@
 /*   By: jfarnos- <jfarnos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:34:24 by jfarnos-          #+#    #+#             */
-/*   Updated: 2023/02/24 00:49:42 by jfarnos-         ###   ########.fr       */
+/*   Updated: 2023/04/05 22:48:32 by jfarnos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (0);
 	if (!s2)
 	{
-		//free(s1);
 		return (s1);
 	}
 	dst = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
@@ -63,15 +62,13 @@ char	*ft_strchr(char *s, int c)
 
 	i = 0;
 	if (!s)
-		return(s);
+		return (s);
 	while (s[i])
 	{
 		if (s[i] == (char )c)
 			return (&s[i]);
 		i++;
 	}
-	// if (s)
-	// 	free(s);
 	return (0);
 }
 

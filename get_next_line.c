@@ -6,7 +6,7 @@
 /*   By: jfarnos- <jfarnos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:41:30 by jfarnos-          #+#    #+#             */
-/*   Updated: 2023/02/24 00:51:04 by jfarnos-         ###   ########.fr       */
+/*   Updated: 2023/04/06 01:10:18 by jfarnos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,20 @@ char	*ft_update_fd(char *str)
 	int		j;
 	char	*aux;
 
+	if (ft_strchr(str,  '\n') == '\0')
+	{
+		aux = malloc(sizeof (char) * 1);
+		if (!aux)
+			return (NULL);
+		aux[0] = '\0';
+		return (aux);
+	}
 	i = 0;
 	while (str[i] != '\n' && str[i] != '\0')
 		i++;
 	i = i + 1;
-	if (str[i - 1] == '\0'){
-		//free(str);
+	if (str[i - 1] == '\0')
+	{
 		return (str);
 	}
 	j = 0;
@@ -33,8 +41,6 @@ char	*ft_update_fd(char *str)
 	while (str[i] != 0)
 		aux[j++] = str[i++];
 	aux[j] = str[i];
-	if (str)
-		free(str);
 	return (aux);
 }
 
@@ -64,22 +70,22 @@ char	*get_next_line(int fd)
 	char		temp[BUFFER_SIZE + 1];
 	int			nbr;
 	char		*line;
+	// char	*old;
 
 	if (!mander)
 	{
-		mander = malloc(BUFFER_SIZE + 1);
+		mander = malloc(sizeof (char) * 1);
+		mander[0] = '\0';
 		if (!mander)
 			return (NULL);
 	}
-	ft_bzero(temp, BUFFER_SIZE + 1);
 	nbr = 1;
 	while (nbr > 0 && ft_strchr(mander, '\n') == '\0')
 	{
+		ft_bzero(temp, BUFFER_SIZE + 1);
 		nbr = read(fd, temp, BUFFER_SIZE);
 		mander = ft_strjoin(mander, temp);
 	}
-	if (((nbr == 0 && mander[0] == 0)) || nbr == -1)
-		return (NULL);
 	line = ft_find_end_of_line(mander);
 	mander = ft_update_fd(mander);
 	return (line);
@@ -95,10 +101,9 @@ char	*get_next_line(int fd)
 // 	fd = open("fd.txt", O_RDONLY);
 // 	while (i >= 0)
 // 	{
-// 		line = get_next_line(-1);
-// 		printf("\n\n%s\n\n\n", line);
+// 		line = get_next_line(fd);
+// 		printf("%s", line);
 // 		free(line);
 // 		i--;
 // 	}
-// 	system("leaks a.out");
 // }
