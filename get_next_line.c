@@ -6,7 +6,7 @@
 /*   By: jfarnos- <jfarnos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:41:30 by jfarnos-          #+#    #+#             */
-/*   Updated: 2023/04/06 01:10:18 by jfarnos-         ###   ########.fr       */
+/*   Updated: 2023/04/06 02:55:35 by jfarnos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_update_fd(char *str)
 	int		j;
 	char	*aux;
 
-	if (ft_strchr(str,  '\n') == '\0')
+	if (ft_strchr(str, '\n') == '\0')
 	{
 		aux = malloc(sizeof (char) * 1);
 		if (!aux)
@@ -66,28 +66,27 @@ char	*ft_find_end_of_line(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char	*mander = NULL;
+	static char	*buffer_fd = NULL;
 	char		temp[BUFFER_SIZE + 1];
 	int			nbr;
 	char		*line;
-	// char	*old;
 
-	if (!mander)
+	if (!buffer_fd)
 	{
-		mander = malloc(sizeof (char) * 1);
-		mander[0] = '\0';
-		if (!mander)
+		buffer_fd = malloc(sizeof (char) * 1);
+		buffer_fd[0] = '\0';
+		if (!buffer_fd)
 			return (NULL);
 	}
 	nbr = 1;
-	while (nbr > 0 && ft_strchr(mander, '\n') == '\0')
+	while (nbr > 0 && ft_strchr(buffer_fd, '\n') == '\0')
 	{
 		ft_bzero(temp, BUFFER_SIZE + 1);
 		nbr = read(fd, temp, BUFFER_SIZE);
-		mander = ft_strjoin(mander, temp);
+		buffer_fd = ft_strjoin(buffer_fd, temp);
 	}
-	line = ft_find_end_of_line(mander);
-	mander = ft_update_fd(mander);
+	line = ft_find_end_of_line(buffer_fd);
+	buffer_fd = ft_update_fd(buffer_fd);
 	return (line);
 }
 
@@ -103,7 +102,6 @@ char	*get_next_line(int fd)
 // 	{
 // 		line = get_next_line(fd);
 // 		printf("%s", line);
-// 		free(line);
 // 		i--;
 // 	}
 // }
