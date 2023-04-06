@@ -6,20 +6,25 @@
 /*   By: jfarnos- <jfarnos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:41:21 by jfarnos-          #+#    #+#             */
-/*   Updated: 2023/04/06 01:35:54 by jfarnos-         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:53:30 by jfarnos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include <unistd.h>
-# include <string.h>
-# include <stdlib.h>
-# include <stdio.h>
 # include <fcntl.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE BUFSIZ
+# endif
+
+# if BUFFER_SIZE > 9223372036854775806L /*Double long*/
+#  undef BUFFER_SIZE
+#  define BUFFER_SIZE 1
 # endif
 
 int		ft_strlen(char *str);
