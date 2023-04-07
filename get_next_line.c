@@ -6,7 +6,7 @@
 /*   By: jfarnos- <jfarnos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:41:30 by jfarnos-          #+#    #+#             */
-/*   Updated: 2023/04/07 15:35:06 by jfarnos-         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:04:47 by jfarnos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	*get_next_line(int fd)
 		if (nbr > 0)
 			buffer_fd = ft_strjoin(buffer_fd, temp);
 	}
-	if (nbr <= 0)
+	if (nbr < 0)
 	{
 		free(buffer_fd);
 		buffer_fd = NULL;
