@@ -6,36 +6,22 @@
 /*   By: jfarnos- <jfarnos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:41:30 by jfarnos-          #+#    #+#             */
-/*   Updated: 2023/04/06 16:53:10 by jfarnos-         ###   ########.fr       */
+/*   Updated: 2023/04/07 15:35:06 by jfarnos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/**
- * The function updates a string by removing the first line and returning the 
- * updated string.
- * 
- * @param str The input string that needs to be updated.
- * It is assumed that this string contains at least one newline character.
- * 
- * @return a pointer to a newly allocated string that contains the remaining 
- * characters after the first line break character in the input string. 
- * If the input string does not contain a line break character, or if the 
- * line break character is the last character in the string, the function 
- * returns  NULL or the original input string, respectively.
- */
 char	*ft_update_fd(char *str, int i, int j)
 {
 	char	*aux;
 
-	if (ft_strchr(str, '\n') == '\0')
+	if (ft_strchr(str, '\n') == NULL)
 	{
 		if (str)
 			free(str);
 		return (NULL);
 	}
-	i = 0;
 	while (str[i] != '\n' && str[i] != '\0')
 		i++;
 	i = i + 1;
@@ -43,13 +29,12 @@ char	*ft_update_fd(char *str, int i, int j)
 	{
 		return (str);
 	}
-	j = 0;
 	aux = malloc((ft_strlen(str) - i) + 1);
 	if (!aux)
 		return (NULL);
 	while (str[i] != 0)
 		aux[j++] = str[i++];
-	aux[j] = str[i];
+	aux[j] = '\0';
 	free(str);
 	return (aux);
 }
@@ -76,6 +61,26 @@ char	*ft_find_end_of_line(char *str)
 	return (aux);
 }
 
+char	*ft_strdup(char *s1)
+{
+	char	*s2;
+	int		s1len;
+	int		i;
+
+	s1len = ft_strlen(s1);
+	s2 = (char *)malloc(sizeof(char) * (s1len + 1));
+	if (s2 == '\0')
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		s2[i] = s1[i];
+		i++;
+	}
+	s2[i] = '\0';
+	return (s2);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*buffer_fd;
@@ -83,25 +88,26 @@ char	*get_next_line(int fd)
 	int			nbr;
 	char		*line;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
 	if (!buffer_fd)
-	{
-		buffer_fd = malloc(sizeof(char) * 1);
-		buffer_fd[0] = '\0';
-		if (!buffer_fd)
-			return (NULL);
-	}
+		buffer_fd = ft_strdup("");
 	nbr = 1;
-	while (nbr > 0 && ft_strchr(buffer_fd, '\n') == '\0')
+	while (nbr > 0 && ft_strchr(buffer_fd, '\n') == NULL)
 	{
 		ft_bzero(temp, BUFFER_SIZE + 1);
 		nbr = read(fd, temp, BUFFER_SIZE);
 		if (nbr > 0)
 			buffer_fd = ft_strjoin(buffer_fd, temp);
 	}
-	if (nbr < 0)
-		return (NULL);
+	if (nbr <= 0)
+	{
+		free(buffer_fd);
+		buffer_fd = NULL;
+		return (0);
+	}
 	line = ft_find_end_of_line(buffer_fd);
-	buffer_fd = ft_update_fd(buffer_fd);
+	buffer_fd = ft_update_fd(buffer_fd, 0, 0);
 	return (line);
 }
 
