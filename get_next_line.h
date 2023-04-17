@@ -6,7 +6,7 @@
 /*   By: jfarnos- <jfarnos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:41:21 by jfarnos-          #+#    #+#             */
-/*   Updated: 2023/04/06 16:53:30 by jfarnos-         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:08:12 by jfarnos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 # if BUFFER_SIZE > 9223372036854775806L /*Double long*/
 #  undef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 10
 # endif
 
 int		ft_strlen(char *str);

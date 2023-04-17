@@ -6,11 +6,12 @@
 /*   By: jfarnos- <jfarnos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:41:30 by jfarnos-          #+#    #+#             */
-/*   Updated: 2023/04/07 16:04:47 by jfarnos-         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:45:47 by jfarnos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+//#include <time.h>
 
 char	*ft_update_fd(char *str, int i, int j)
 {
@@ -98,7 +99,7 @@ char	*get_next_line(int fd)
 		ft_bzero(temp, BUFFER_SIZE + 1);
 		nbr = read(fd, temp, BUFFER_SIZE);
 		if (nbr > 0)
-			buffer_fd = ft_strjoin(buffer_fd, temp);
+			buffer_fd = ft_strjoin(buffer_fd, temp);//malloc check
 	}
 	if (nbr < 0)
 	{
@@ -106,29 +107,39 @@ char	*get_next_line(int fd)
 		buffer_fd = NULL;
 		return (0);
 	}
-	line = ft_find_end_of_line(buffer_fd);
-	buffer_fd = ft_update_fd(buffer_fd, 0, 0);
+	else
+	{
+		line = ft_find_end_of_line(buffer_fd);//malloc check
+		buffer_fd = ft_update_fd(buffer_fd, 0, 0);//malloc check
+	}
+	if (!*line)
+	{
+		free(line);
+		return (NULL);
+	}
 	return (line);
 }
 
-void	get_next_leak(void)
-{
-	system("leaks -q a.out");
-}
+#if 0
 
-/* int	main(void)
+int	main(void)
 {
-	int		fd;
-	char	*line;
-	int		i;
+ 	int fd;
 
-	atexit(get_next_leak);
-	i = 8;
-	fd = open("fd.txt", O_RDONLY);
-	while (i >= 0)
-	{
-		line = get_next_line(fd);
-		printf("%s", line);
-		i--;
-	}
-} */
+ 	fd = open("41 no_nl.txt", O_RDONLY);
+ 	char *s;
+	//clock_t start = clock();
+ 	while ((s = get_next_line(fd)))
+ 	{
+		printf("===================================\n");
+		printf("RETURN ----> %s", s);
+		printf("===================================\n");
+ 		free(s);
+ 	}
+	printf("RETURN ----> %s", s);
+	//float seconds = (float)(clock() - start) / CLOCKS_PER_SEC;
+	//printf ("%.2f ds\n", seconds);
+	//system("leaks a.out");
+ 	return (0);
+ }
+#endif
