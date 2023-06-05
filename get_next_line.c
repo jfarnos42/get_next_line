@@ -6,11 +6,12 @@
 /*   By: jfarnos- <jfarnos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:41:30 by jfarnos-          #+#    #+#             */
-/*   Updated: 2023/04/17 16:45:47 by jfarnos-         ###   ########.fr       */
+/*   Updated: 2023/06/05 12:33:37 by jfarnos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
 //#include <time.h>
 
 char	*ft_update_fd(char *str, int i, int j)
@@ -89,17 +90,17 @@ char	*get_next_line(int fd)
 	int			nbr;
 	char		*line;
 
+	nbr = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!buffer_fd)
 		buffer_fd = ft_strdup("");
-	nbr = 1;
 	while (nbr > 0 && ft_strchr(buffer_fd, '\n') == NULL)
 	{
 		ft_bzero(temp, BUFFER_SIZE + 1);
 		nbr = read(fd, temp, BUFFER_SIZE);
 		if (nbr > 0)
-			buffer_fd = ft_strjoin(buffer_fd, temp);//malloc check
+			buffer_fd = ft_strjoin(buffer_fd, temp);
 	}
 	if (nbr < 0)
 	{
@@ -109,8 +110,8 @@ char	*get_next_line(int fd)
 	}
 	else
 	{
-		line = ft_find_end_of_line(buffer_fd);//malloc check
-		buffer_fd = ft_update_fd(buffer_fd, 0, 0);//malloc check
+		line = ft_find_end_of_line(buffer_fd);
+		buffer_fd = ft_update_fd(buffer_fd, 0, 0);
 	}
 	if (!*line)
 	{
@@ -120,9 +121,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-#if 0
-
-int	main(void)
+/* int	main(void)
 {
  	int fd;
 
@@ -141,5 +140,4 @@ int	main(void)
 	//printf ("%.2f ds\n", seconds);
 	//system("leaks a.out");
  	return (0);
- }
-#endif
+ } */
